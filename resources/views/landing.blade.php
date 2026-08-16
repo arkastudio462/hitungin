@@ -903,7 +903,7 @@
                 Hitungin membaca notifikasi bank dan e-wallet di HP kamu, lalu mencatat setiap transaksi secara otomatis. Tanpa input manual, tanpa ribet.
             </p>
             <div class="hero-buttons reveal" style="transition-delay: 0.3s">
-                <a href="https://github.com/arkastudio462/hitungin/releases/latest" class="btn-download" target="_blank" rel="noopener">
+                <a href="https://github.com/arkastudio462/hitungin/releases/latest/download/app-debug.apk" class="btn-download" download>
                     <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                     Download APK
                 </a>
@@ -1220,7 +1220,7 @@
             <div class="cta-box reveal">
                 <h2>Mulai Atur Keuanganmu Sekarang</h2>
                 <p>Download Hitungin dan rasakan kemudahan mencatat keuangan secara otomatis. Gratis, selamanya.</p>
-                <a href="https://github.com/arkastudio462/hitungin/releases/latest" class="btn-download" target="_blank" rel="noopener">
+                <a href="https://github.com/arkastudio462/hitungin/releases/latest/download/app-debug.apk" class="btn-download" download>
                     <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                     Download Sekarang
                 </a>
