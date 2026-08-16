@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useNotificationStore } from '@/stores/notifications';
-import { Bell, Check, AlertTriangle, AlertCircle, Info, X } from '@lucide/vue';
+import { Bell, Check, AlertTriangle, AlertCircle, Info, X, Download } from '@lucide/vue';
 
 const store = useNotificationStore();
 const isOpen = ref(false);
@@ -32,6 +32,7 @@ function getNotificationIcon(type) {
     switch (type) {
         case 'budget_critical': return AlertTriangle;
         case 'budget_warning': return AlertCircle;
+        case 'app_update_available': return Download;
         default: return Info;
     }
 }
@@ -40,6 +41,7 @@ function getNotificationColor(type) {
     switch (type) {
         case 'budget_critical': return 'text-danger bg-danger/10';
         case 'budget_warning': return 'text-warning bg-warning/10';
+        case 'app_update_available': return 'text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-900/20';
         default: return 'text-primary bg-primary/10';
     }
 }
@@ -126,6 +128,17 @@ async function handleMarkAllRead() {
                                 <p class="text-xs font-bold text-gray-900 dark:text-white">{{ n.title }}</p>
                                 <p class="mt-0.5 text-[11px] text-muted line-clamp-2">{{ n.message }}</p>
                                 <p class="mt-1 text-[10px] text-muted/70">{{ timeAgo(n.created_at) }}</p>
+                                <a
+                                    v-if="n.type === 'app_update_available' && n.data?.download_url"
+                                    :href="n.data.download_url"
+                                    target="_blank"
+                                    rel="noopener"
+                                    class="mt-2 inline-flex items-center gap-1 rounded-lg bg-emerald-600 px-3 py-1.5 text-[10px] font-bold text-white transition-colors hover:bg-emerald-700 active:scale-95"
+                                    @click.stop
+                                >
+                                    <Download class="size-3" />
+                                    Download
+                                </a>
                             </div>
                             <button
                                 v-if="!n.read_at"

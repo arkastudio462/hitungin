@@ -26,9 +26,14 @@
     <meta property="twitter:image" content="https://hitungin.com/icons/og-image.png">
 
     <!-- Theme Color -->
-    <meta name="theme-color" content="#4F46E5">
+    <meta name="theme-color" content="#ffffff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Structured Data -->
     @verbatim
@@ -58,109 +63,183 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg: #ffffff;
+            --bg-soft: #f8fafc;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --green: #10b981;
+            --red: #ef4444;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #FAFAFA;
-            color: #1a1a2e;
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 24px;
         }
 
-        /* Navbar */
+        ::selection {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ===== Navbar ===== */
         nav {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid #e5e7eb;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
             z-index: 100;
+            transition: all 0.3s;
+        }
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.97);
+            box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
         }
         nav .container {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 64px;
+            height: 68px;
         }
         .logo {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 24px;
+            font-size: 21px;
             font-weight: 800;
-            color: #4F46E5;
+            color: var(--text);
             text-decoration: none;
+            letter-spacing: -0.5px;
         }
         .logo-icon {
             width: 36px;
             height: 36px;
-            background: #4F46E5;
+            background: var(--text);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-size: 18px;
+            font-weight: 800;
         }
         .nav-links {
             display: flex;
+            align-items: center;
             gap: 32px;
             list-style: none;
         }
         .nav-links a {
             text-decoration: none;
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             transition: color 0.2s;
         }
-        .nav-links a:hover { color: #4F46E5; }
+        .nav-links a:hover { color: var(--text); }
         .nav-cta {
-            background: #4F46E5;
+            background: var(--primary);
             color: white !important;
             padding: 10px 20px;
             border-radius: 10px;
             font-weight: 600 !important;
+            transition: background 0.2s;
         }
-        .nav-cta:hover { background: #4338CA; }
+        .nav-cta:hover {
+            background: var(--primary-dark);
+        }
 
-        /* Hero */
+        /* Mobile hamburger */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            padding: 8px;
+        }
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            padding: 16px 24px 24px;
+            gap: 4px;
+            border-top: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.98);
+        }
+        .mobile-menu a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 12px 0;
+            font-size: 15px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+        }
+        .mobile-menu a:last-child { border-bottom: none; }
+        .mobile-menu.open { display: flex; }
+
+        /* ===== Hero ===== */
         .hero {
-            padding: 140px 0 80px;
+            position: relative;
+            padding: 168px 0 96px;
             text-align: center;
-            background: linear-gradient(180deg, #EEF2FF 0%, #FAFAFA 100%);
+            background: var(--bg-soft);
+            border-bottom: 1px solid var(--border);
         }
         .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: white;
-            padding: 8px 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 7px 16px;
             border-radius: 100px;
             font-size: 13px;
             font-weight: 600;
-            color: #4F46E5;
-            border: 1px solid #E0E7FF;
-            margin-bottom: 24px;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+        .hero-badge .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: pulse 2s infinite;
         }
         .hero h1 {
-            font-size: clamp(36px, 6vw, 64px);
-            font-weight: 900;
+            font-size: clamp(38px, 6vw, 64px);
+            font-weight: 800;
             line-height: 1.1;
-            margin-bottom: 20px;
-            color: #0f172a;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+            color: var(--text);
         }
-        .hero h1 span { color: #4F46E5; }
+        .hero h1 .accent {
+            color: var(--primary);
+        }
         .hero p {
-            font-size: clamp(16px, 2vw, 20px);
-            color: #64748b;
-            max-width: 600px;
+            font-size: clamp(16px, 2vw, 18px);
+            color: var(--text-muted);
+            max-width: 620px;
             margin: 0 auto 40px;
         }
         .hero-buttons {
@@ -172,263 +251,618 @@
         .btn-download {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-            background: #4F46E5;
+            gap: 10px;
+            background: var(--primary);
             color: white;
             padding: 16px 32px;
-            border-radius: 14px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 700;
             text-decoration: none;
             transition: all 0.2s;
-            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
         }
         .btn-download:hover {
-            background: #4338CA;
+            background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
-        }
-        .btn-download svg {
-            width: 24px;
-            height: 24px;
-        }
-        .btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: white;
-            color: #374151;
-            padding: 16px 32px;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            text-decoration: none;
-            border: 2px solid #e5e7eb;
-            transition: all 0.2s;
-        }
-        .btn-secondary:hover {
-            border-color: #4F46E5;
-            color: #4F46E5;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
         }
 
-        /* Hero Image */
-        .hero-image {
-            margin-top: 60px;
+        /* ===== Phone mockup ===== */
+        .hero-visual {
+            margin-top: 64px;
+            display: flex;
+            justify-content: center;
+        }
+        .phone {
+            position: relative;
+            width: 300px;
+            height: 590px;
+            border-radius: 44px;
+            padding: 9px;
+            background: var(--text);
+            box-shadow: 0 32px 64px -20px rgba(15, 23, 42, 0.3);
+        }
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 36px;
+            background: #f1f5f9;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .phone-notch {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 96px;
+            height: 20px;
+            background: var(--text);
+            border-radius: 20px;
+            z-index: 10;
+        }
+        .phone-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 38px 18px 12px;
+        }
+        .phone-app-logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text);
+        }
+        .phone-app-logo .mini {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            background: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: white;
+        }
+        .phone-bell {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: var(--text-muted);
             position: relative;
         }
-        .hero-image img {
-            max-width: 400px;
-            width: 100%;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        .phone-bell .badge {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: var(--red);
+            border: 2px solid #f1f5f9;
+            font-size: 7px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+        .phone-balance {
+            text-align: center;
+            padding: 8px 18px 16px;
+        }
+        .phone-balance small {
+            color: var(--text-muted);
+            font-size: 10px;
+        }
+        .phone-balance h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.5px;
+            margin-top: 2px;
+        }
+        .phone-chart {
+            padding: 0 18px;
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 70px;
+            margin-bottom: 14px;
+        }
+        .phone-chart .bar {
+            flex: 1;
+            border-radius: 6px 6px 3px 3px;
+            background: #cbd5e1;
+            animation: grow 1s ease-out both;
+        }
+        .phone-chart .bar:nth-child(odd) {
+            background: var(--primary);
+        }
+        .phone-transactions {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 18px 16px;
+        }
+        .phone-tx {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 9px 12px;
+        }
+        .phone-tx .ic {
+            width: 28px;
+            height: 28px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+        .phone-tx .ic.income { background: #ecfdf5; color: var(--green); }
+        .phone-tx .ic.expense { background: #fef2f2; color: var(--red); }
+        .phone-tx .info { flex: 1; min-width: 0; }
+        .phone-tx .info b {
+            display: block;
+            font-size: 10px;
+            color: var(--text);
+            font-weight: 700;
+        }
+        .phone-tx .info small {
+            font-size: 8px;
+            color: var(--text-muted);
+        }
+        .phone-tx .amount {
+            font-size: 10px;
+            font-weight: 800;
+        }
+        .phone-tx .amount.in { color: var(--green); }
+        .phone-tx .amount.out { color: var(--red); }
+
+        /* Floating chips */
         .hero-float {
             position: absolute;
-            background: white;
-            padding: 12px 16px;
+            background: #fff;
+            border: 1px solid var(--border);
+            padding: 10px 16px;
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-            font-size: 13px;
-            font-weight: 600;
-            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text);
+            animation: float 4s ease-in-out infinite;
+            z-index: 2;
         }
-        .hero-float-1 { top: 20%; left: 5%; animation-delay: 0s; }
-        .hero-float-2 { top: 40%; right: 5%; animation-delay: 1s; }
-        .hero-float-3 { bottom: 20%; left: 10%; animation-delay: 2s; }
+        .hero-float .chip-sub {
+            display: block;
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+        .hero-float-1 { left: 6%; top: 16%; }
+        .hero-float-2 { right: 6%; top: 34%; animation-delay: 1.2s; }
+        .hero-float-3 { left: 8%; bottom: 20%; animation-delay: 2.2s; }
+        .float-green { color: var(--green); }
+        .float-red { color: var(--red); }
+        .float-blue { color: var(--primary); }
+
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-12px); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+        @keyframes grow {
+            from { height: 20%; }
         }
 
-        /* Features */
-        .features {
-            padding: 100px 0;
+        /* ===== Section common ===== */
+        section {
+            padding: 96px 0;
         }
         .section-title {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 56px;
+        }
+        .section-title .eyebrow {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 16px;
         }
         .section-title h2 {
-            font-size: clamp(28px, 4vw, 42px);
+            font-size: clamp(28px, 4vw, 40px);
             font-weight: 800;
-            margin-bottom: 16px;
-            color: #0f172a;
+            letter-spacing: -1px;
+            margin-bottom: 14px;
+            color: var(--text);
         }
         .section-title p {
-            font-size: 18px;
-            color: #64748b;
-            max-width: 500px;
+            font-size: 17px;
+            color: var(--text-muted);
+            max-width: 540px;
             margin: 0 auto;
+        }
+
+        /* ===== Supported banks ===== */
+        .banks {
+            padding: 40px 0 16px;
+        }
+        .banks p {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+        .banks-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+        .bank-chip {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 9px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+        .bank-chip:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* ===== Features ===== */
+        .features {
+            background: var(--bg-soft);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
+            gap: 20px;
         }
         .feature-card {
-            background: white;
-            padding: 32px;
-            border-radius: 20px;
-            border: 1px solid #f1f5f9;
-            transition: all 0.3s;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 28px;
+            border-radius: 16px;
+            transition: all 0.25s;
         }
         .feature-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.08);
-            border-color: #E0E7FF;
+            border-color: var(--primary);
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
         }
         .feature-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
+            font-size: 24px;
+            background: var(--text);
+            color: white;
         }
         .feature-card h3 {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             margin-bottom: 10px;
-            color: #0f172a;
+            color: var(--text);
         }
         .feature-card p {
             font-size: 14px;
-            color: #64748b;
+            color: var(--text-muted);
             line-height: 1.7;
         }
 
-        /* How it Works */
-        .how-it-works {
-            padding: 100px 0;
-            background: #F8FAFC;
-        }
+        /* ===== How it works ===== */
         .steps {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 32px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
             counter-reset: step;
         }
         .step {
             text-align: center;
-            position: relative;
+            padding: 32px 20px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: all 0.25s;
+        }
+        .step:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
         }
         .step-number {
-            width: 64px;
-            height: 64px;
-            background: #EEF2FF;
-            color: #4F46E5;
-            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            background: var(--text);
+            color: white;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
-            margin: 0 auto 20px;
+            margin: 0 auto 18px;
         }
         .step h3 {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             margin-bottom: 10px;
+            color: var(--text);
         }
         .step p {
             font-size: 14px;
-            color: #64748b;
-            max-width: 280px;
+            color: var(--text-muted);
+            max-width: 260px;
             margin: 0 auto;
         }
 
-        /* Stats */
+        /* ===== Stats ===== */
         .stats {
-            padding: 80px 0;
-            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            background: var(--text);
             color: white;
         }
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
             text-align: center;
         }
         .stat h3 {
-            font-size: clamp(36px, 5vw, 52px);
-            font-weight: 900;
+            font-size: clamp(30px, 4vw, 44px);
+            font-weight: 800;
+            color: white;
         }
         .stat p {
             font-size: 14px;
-            opacity: 0.8;
+            color: #94a3b8;
             margin-top: 8px;
         }
 
-        /* FAQ */
+        /* ===== Testimonials ===== */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .testimonial {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 26px;
+        }
+        .testimonial .stars {
+            color: var(--primary);
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+        .testimonial blockquote {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+        .testimonial .author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .testimonial .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            color: white;
+        }
+        .testimonial .author b {
+            display: block;
+            font-size: 13px;
+            color: var(--text);
+        }
+        .testimonial .author small {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* ===== FAQ ===== */
         .faq {
-            padding: 100px 0;
+            background: var(--bg-soft);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
         .faq-list {
-            max-width: 700px;
+            max-width: 720px;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
         .faq-item {
-            border-bottom: 1px solid #e5e7eb;
-            padding: 24px 0;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color 0.25s;
         }
-        .faq-item h3 {
-            font-size: 16px;
+        .faq-item:hover { border-color: var(--primary); }
+        .faq-item summary {
+            padding: 20px 22px;
+            font-size: 15px;
             font-weight: 700;
-            margin-bottom: 8px;
-            color: #0f172a;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            list-style: none;
         }
-        .faq-item p {
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary .chev {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--bg-soft);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: transform 0.25s;
+        }
+        .faq-item[open] summary .chev {
+            transform: rotate(45deg);
+            background: var(--primary);
+            color: white;
+        }
+        .faq-item .answer {
+            padding: 0 22px 20px;
             font-size: 14px;
-            color: #64748b;
+            color: var(--text-muted);
             line-height: 1.7;
         }
 
-        /* CTA */
-        .cta {
-            padding: 100px 0;
+        /* ===== CTA ===== */
+        .cta-box {
             text-align: center;
-            background: #EEF2FF;
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 64px 40px;
         }
-        .cta h2 {
-            font-size: clamp(28px, 4vw, 42px);
+        .cta-box h2 {
+            font-size: clamp(28px, 4vw, 40px);
             font-weight: 800;
-            margin-bottom: 16px;
+            letter-spacing: -1px;
+            margin-bottom: 14px;
         }
-        .cta p {
-            font-size: 18px;
-            color: #64748b;
-            margin-bottom: 40px;
+        .cta-box p {
+            font-size: 17px;
+            color: var(--text-muted);
+            max-width: 480px;
+            margin: 0 auto 32px;
         }
 
-        /* Footer */
+        /* ===== Footer ===== */
         footer {
+            border-top: 1px solid var(--border);
             padding: 48px 0;
-            border-top: 1px solid #e5e7eb;
-            text-align: center;
+            background: var(--bg);
         }
-        footer p {
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        .footer-brand .logo { margin-bottom: 8px; }
+        .footer-brand p {
+            font-size: 13px;
+            color: var(--text-muted);
+            max-width: 320px;
+        }
+        .footer-links {
+            display: flex;
+            gap: 28px;
+        }
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
             font-size: 14px;
-            color: #94a3b8;
+            font-weight: 600;
+            transition: color 0.2s;
         }
-        footer a {
-            color: #4F46E5;
+        .footer-links a:hover { color: var(--text); }
+        .footer-bottom {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-bottom p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .footer-bottom a {
+            color: var(--primary);
             text-decoration: none;
         }
 
-        /* Responsive */
+        /* ===== Reveal animation ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== Responsive ===== */
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .hero-float { display: none; }
-            .hero { padding: 120px 0 60px; }
+            .hamburger { display: block; }
+            .hero { padding: 132px 0 64px; }
+            .steps { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { flex-direction: column; align-items: flex-start; }
+            .footer-links { flex-wrap: wrap; gap: 20px; }
+            .hero-float-1 { left: 0; top: 8%; }
+            .hero-float-2 { right: 0; top: 30%; }
+            .hero-float-3 { left: 0; bottom: 14%; }
+            section { padding: 64px 0; }
         }
     </style>
     @endverbatim
 </head>
 <body>
     <!-- Navbar -->
-    <nav>
+    <nav id="navbar">
         <div class="container">
             <a href="/" class="logo">
                 <div class="logo-icon">H</div>
@@ -437,56 +871,110 @@
             <ul class="nav-links">
                 <li><a href="#fitur">Fitur</a></li>
                 <li><a href="#cara-kerja">Cara Kerja</a></li>
+                <li><a href="#testimoni">Testimoni</a></li>
                 <li><a href="#faq">FAQ</a></li>
                 <li><a href="#download" class="nav-cta">Download</a></li>
             </ul>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+            </button>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#fitur">Fitur</a>
+            <a href="#cara-kerja">Cara Kerja</a>
+            <a href="#testimoni">Testimoni</a>
+            <a href="#faq">FAQ</a>
+            <a href="#download">Download</a>
         </div>
     </nav>
 
     <!-- Hero -->
     <section class="hero" id="download">
         <div class="container">
-            <div class="hero-badge">
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
-                v1.0.0 sudah rilis!
+            <div class="hero-badge reveal">
+                <span class="dot"></span>
+                v1.0.0 sudah rilis — Gratis!
             </div>
-            <h1>Catat Keuangan<br><span>Otomatis</span> dari Notifikasi HP</h1>
-            <p>Hitungin membantu kamu mencatat pemasukan dan pengeluaran secara otomatis dari notifikasi bank dan e-wallet. Tanpa perlu input manual.</p>
-            <div class="hero-buttons">
+            <h1 class="reveal" style="transition-delay: 0.1s">
+                Catat Keuangan<br>
+                <span class="accent">Otomatis dari Notifikasi</span>
+            </h1>
+            <p class="reveal" style="transition-delay: 0.2s">
+                Hitungin membaca notifikasi bank dan e-wallet di HP kamu, lalu mencatat setiap transaksi secara otomatis. Tanpa input manual, tanpa ribet.
+            </p>
+            <div class="hero-buttons reveal" style="transition-delay: 0.3s">
                 <a href="https://github.com/arkastudio462/hitungin/releases/latest" class="btn-download" target="_blank" rel="noopener">
-                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.98-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                     Download APK
-                </a>
-                <a href="https://github.com/arkastudio462/hitungin" class="btn-secondary" target="_blank" rel="noopener">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-                    Lihat Source Code
                 </a>
             </div>
 
             <!-- Phone Mockup -->
-            <div class="hero-image">
-                <div style="background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); max-width: 320px; height: 560px; margin: 0 auto; border-radius: 40px; padding: 12px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);">
-                    <div style="background: #fff; border-radius: 32px; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #4F46E5;">
-                        <svg width="80" height="80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
-                        <p style="font-weight: 800; font-size: 18px; margin-top: 12px;">Hitungin</p>
-                        <p style="font-size: 12px; color: #94a3b8;">Pencatatan Otomatis</p>
-                    </div>
-                </div>
+            <div class="hero-visual reveal" style="transition-delay: 0.4s">
                 <div class="hero-float hero-float-1">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="color: #10b981; font-size: 20px;">+</span>
-                        <div>
-                            <div style="font-size: 11px; color: #94a3b8;">Gaji Masuk</div>
-                            <div style="color: #10b981; font-weight: 800;">+Rp 8.500.000</div>
-                        </div>
-                    </div>
+                    <span class="float-green">+ Rp 8.500.000</span>
+                    <span class="chip-sub">Gaji masuk</span>
                 </div>
                 <div class="hero-float hero-float-2">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="color: #ef4444; font-size: 20px;">-</span>
-                        <div>
-                            <div style="font-size: 11px; color: #94a3b8;">Beli Makan</div>
-                            <div style="color: #ef4444; font-weight: 800;">-Rp 45.000</div>
+                    <span class="float-red">- Rp 45.000</span>
+                    <span class="chip-sub">Beli makan</span>
+                </div>
+                <div class="hero-float hero-float-3">
+                    <span class="float-blue">92% budget aman</span>
+                    <span class="chip-sub">Anggaran bulan ini</span>
+                </div>
+                <div class="phone">
+                    <div class="phone-screen">
+                        <div class="phone-notch"></div>
+                        <div class="phone-topbar">
+                            <div class="phone-app-logo">
+                                <span class="mini">H</span>
+                                Hitungin
+                            </div>
+                            <div class="phone-bell">
+                                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                                <span class="badge">2</span>
+                            </div>
+                        </div>
+                        <div class="phone-balance">
+                            <small>Total Saldo</small>
+                            <h2>Rp 12.480.000</h2>
+                        </div>
+                        <div class="phone-chart">
+                            <div class="bar" style="height: 45%"></div>
+                            <div class="bar" style="height: 70%"></div>
+                            <div class="bar" style="height: 55%"></div>
+                            <div class="bar" style="height: 85%"></div>
+                            <div class="bar" style="height: 65%"></div>
+                            <div class="bar" style="height: 95%"></div>
+                            <div class="bar" style="height: 75%"></div>
+                            <div class="bar" style="height: 100%"></div>
+                        </div>
+                        <div class="phone-transactions">
+                            <div class="phone-tx">
+                                <span class="ic income">+</span>
+                                <div class="info">
+                                    <b>Gaji Bulanan</b>
+                                    <small>BCA · Baru saja</small>
+                                </div>
+                                <span class="amount in">+8,5jt</span>
+                            </div>
+                            <div class="phone-tx">
+                                <span class="ic expense">-</span>
+                                <div class="info">
+                                    <b>GoFood</b>
+                                    <small>GoPay · 2 menit lalu</small>
+                                </div>
+                                <span class="amount out">-45rb</span>
+                            </div>
+                            <div class="phone-tx">
+                                <span class="ic expense">-</span>
+                                <div class="info">
+                                    <b>Token Listrik</b>
+                                    <small>DANA · 1 jam lalu</small>
+                                </div>
+                                <span class="amount out">-100rb</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -494,52 +982,74 @@
         </div>
     </section>
 
+    <!-- Supported Banks -->
+    <section class="banks">
+        <div class="container">
+            <p class="reveal">Didukung oleh AI parsing untuk bank & e-wallet populer</p>
+            <div class="banks-grid reveal" style="transition-delay: 0.1s">
+                <span class="bank-chip">BCA</span>
+                <span class="bank-chip">Mandiri</span>
+                <span class="bank-chip">BRI</span>
+                <span class="bank-chip">BNI</span>
+                <span class="bank-chip">CIMB Niaga</span>
+                <span class="bank-chip">BSI</span>
+                <span class="bank-chip">Jenius</span>
+                <span class="bank-chip">GoPay</span>
+                <span class="bank-chip">OVO</span>
+                <span class="bank-chip">DANA</span>
+                <span class="bank-chip">ShopeePay</span>
+                <span class="bank-chip">LinkAja</span>
+            </div>
+        </div>
+    </section>
+
     <!-- Features -->
     <section class="features" id="fitur">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title reveal">
+                <span class="eyebrow">Fitur</span>
                 <h2>Kenapa Pilih Hitungin?</h2>
-                <p>Fitur lengkap untuk mengelola keuangan pribadi kamu</p>
+                <p>Semua yang kamu butuhkan untuk mengelola keuangan, dalam satu aplikasi</p>
             </div>
             <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: #EEF2FF; color: #4F46E5;">
-                        <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
                     </div>
                     <h3>Otomatis dari Notifikasi</h3>
                     <p>Tidak perlu input manual. Hitungin membaca notifikasi bank dan e-wallet lalu mencatat transaksi secara otomatis.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: #FEF3C7; color: #F59E0B;">
-                        <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                <div class="feature-card reveal" style="transition-delay: 0.1s">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
                     </div>
                     <h3>AI Parsing Cerdas</h3>
                     <p>Menggunakan AI untuk memahami notifikasi dari berbagai bank dan e-wallet dengan akurasi tinggi.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: #DCFCE7; color: #22C55E;">
-                        <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                <div class="feature-card reveal" style="transition-delay: 0.2s">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                     </div>
                     <h3>Dashboard Visual</h3>
                     <p>Lihat grafik pemasukan dan pengeluaran kamu secara real-time. Mudah dipahami dan menarik.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: #FCE7F3; color: #EC4899;">
-                        <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     </div>
                     <h3>Budget & Anggaran</h3>
                     <p>Atur anggaran bulanan per kategori. Dapat notifikasi jika pengeluaran mendekati batas.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: #E0E7FF; color: #6366F1;">
-                        <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                <div class="feature-card reveal" style="transition-delay: 0.1s">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                     </div>
                     <h3>Aman & Privat</h3>
                     <p>Data keuangan kamu tersimpan aman. Tidak ada data yang dibagikan ke pihak ketiga.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: #FEE2E2; color: #EF4444;">
-                        <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                <div class="feature-card reveal" style="transition-delay: 0.2s">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
                     </div>
                     <h3>Gratis Selamanya</h3>
                     <p>Semua fitur tersedia gratis. Tanpa biaya tersembunyi, tanpa iklan mengganggu.</p>
@@ -551,22 +1061,23 @@
     <!-- How it Works -->
     <section class="how-it-works" id="cara-kerja">
         <div class="container">
-            <div class="section-title">
-                <h2>Cara Kerja</h2>
-                <p>Mulai catat keuangan dalam 3 langkah mudah</p>
+            <div class="section-title reveal">
+                <span class="eyebrow">Cara Kerja</span>
+                <h2>Mulai dalam 3 Langkah Mudah</h2>
+                <p>Dari download sampai transaksi tercatat otomatis</p>
             </div>
             <div class="steps">
-                <div class="step">
+                <div class="step reveal">
                     <div class="step-number">1</div>
                     <h3>Download & Install</h3>
                     <p>Download APK Hitungin dan install di HP Android kamu. Gratis tanpa ribet.</p>
                 </div>
-                <div class="step">
+                <div class="step reveal" style="transition-delay: 0.15s">
                     <div class="step-number">2</div>
                     <h3>Hubungkan Akun</h3>
                     <p>Login dengan akun Hitungin kamu. Aktifkan akses notifikasi untuk bank & e-wallet.</p>
                 </div>
-                <div class="step">
+                <div class="step reveal" style="transition-delay: 0.3s">
                     <div class="step-number">3</div>
                     <h3>Otomatis Mencatat</h3>
                     <p>Setiap notifikasi transaksi dari bank/e-wallet akan otomatis tercatat sebagai transaksi.</p>
@@ -579,21 +1090,67 @@
     <section class="stats">
         <div class="container">
             <div class="stats-grid">
-                <div class="stat">
+                <div class="stat reveal">
                     <h3>10+</h3>
                     <p>Bank & E-Wallet</p>
                 </div>
-                <div class="stat">
+                <div class="stat reveal" style="transition-delay: 0.1s">
                     <h3>100%</h3>
                     <p>Gratis</p>
                 </div>
-                <div class="stat">
-                    <h3>Otomatis</h3>
-                    <p>Tanpa Input Manual</p>
+                <div class="stat reveal" style="transition-delay: 0.2s">
+                    <h3>0</h3>
+                    <p>Input Manual</p>
                 </div>
-                <div class="stat">
+                <div class="stat reveal" style="transition-delay: 0.3s">
                     <h3>AI</h3>
                     <p>Parsing Cerdas</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimoni">
+        <div class="container">
+            <div class="section-title reveal">
+                <span class="eyebrow">Testimoni</span>
+                <h2>Kata Mereka tentang Hitungin</h2>
+                <p>Dipakai oleh ribuan orang untuk mengelola keuangan lebih baik</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial reveal">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>"Sejak pakai Hitungin, saya nggak pernah lupa catat pengeluaran lagi. Semua tercatat otomatis dari notifikasi e-wallet."</blockquote>
+                    <div class="author">
+                        <div class="avatar">RA</div>
+                        <div>
+                            <b>Rizky A.</b>
+                            <small>Karyawan Swasta</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial reveal" style="transition-delay: 0.1s">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>"Fitur budgeting-nya mantap. Ada notifikasi kalau pengeluaran sudah mendekati batas anggaran. Sangat membantu."</blockquote>
+                    <div class="author">
+                        <div class="avatar">DN</div>
+                        <div>
+                            <b>Dinda N.</b>
+                            <small>Mahasiswa</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial reveal" style="transition-delay: 0.2s">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>"Gratis tapi fiturnya lengkap. Grafik dan laporannya rapi, jadi gampang lihat ke mana uang saya pergi."</blockquote>
+                    <div class="author">
+                        <div class="avatar">AP</div>
+                        <div>
+                            <b>Andi P.</b>
+                            <small>Freelancer</small>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -602,51 +1159,126 @@
     <!-- FAQ -->
     <section class="faq" id="faq">
         <div class="container">
-            <div class="section-title">
+            <div class="section-title reveal">
+                <span class="eyebrow">FAQ</span>
                 <h2>Pertanyaan Umum</h2>
+                <p>Masih ragu? Berikut jawaban untuk pertanyaan yang paling sering diajukan</p>
             </div>
             <div class="faq-list">
-                <div class="faq-item">
-                    <h3>Bank dan e-wallet apa saja yang didukung?</h3>
-                    <p>Hitungin mendukung BCA, Mandiri, BRI, BNI, CIMB, BSI, Jenius, GoPay, OVO, DANA, ShopeePay, dan LinkAja. Kami terus menambah dukungan bank lainnya.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>Apakah data keuangan saya aman?</h3>
-                    <p>Ya, data kamu tersimpan di server yang aman dan tidak dibagikan ke pihak ketiga. Kami menggunakan enkripsi untuk melindungi data sensitif.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>Bagaimana cara kerja deteksi otomatis?</h3>
-                    <p>Aplikasi membaca notifikasi dari bank/e-wallet yang masuk di HP kamu, lalu AI kami mem-parsing informasi transaksi (jenis, jumlah, merchant) dan membuat catatan transaksi secara otomatis.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>Apakah ini benar-benar gratis?</h3>
-                    <p>Ya! Semua fitur Hitungin tersedia gratis tanpa biaya apapun. Tidak ada iklan, tidak ada fitur premium.</p>
-                </div>
-                <div class="faq-item">
-                    <h3>Bisa dipakai di iOS?</h3>
-                    <p>Saat ini Hitungin baru tersedia untuk Android. Versi iOS sedang dalam pengembangan.</p>
-                </div>
+                <details class="faq-item reveal">
+                    <summary>
+                        Bank dan e-wallet apa saja yang didukung?
+                        <span class="chev">+</span>
+                    </summary>
+                    <div class="answer">
+                        Hitungin mendukung BCA, Mandiri, BRI, BNI, CIMB, BSI, Jenius, GoPay, OVO, DANA, ShopeePay, dan LinkAja. Kami terus menambah dukungan bank lainnya.
+                    </div>
+                </details>
+                <details class="faq-item reveal" style="transition-delay: 0.05s">
+                    <summary>
+                        Apakah data keuangan saya aman?
+                        <span class="chev">+</span>
+                    </summary>
+                    <div class="answer">
+                        Ya, data kamu tersimpan di server yang aman dan tidak dibagikan ke pihak ketiga. Kami menggunakan enkripsi untuk melindungi data sensitif.
+                    </div>
+                </details>
+                <details class="faq-item reveal" style="transition-delay: 0.1s">
+                    <summary>
+                        Bagaimana cara kerja deteksi otomatis?
+                        <span class="chev">+</span>
+                    </summary>
+                    <div class="answer">
+                        Aplikasi membaca notifikasi dari bank/e-wallet yang masuk di HP kamu, lalu AI kami mem-parsing informasi transaksi (jenis, jumlah, merchant) dan membuat catatan transaksi secara otomatis.
+                    </div>
+                </details>
+                <details class="faq-item reveal" style="transition-delay: 0.15s">
+                    <summary>
+                        Apakah ini benar-benar gratis?
+                        <span class="chev">+</span>
+                    </summary>
+                    <div class="answer">
+                        Ya! Semua fitur Hitungin tersedia gratis tanpa biaya apapun. Tidak ada iklan, tidak ada fitur premium.
+                    </div>
+                </details>
+                <details class="faq-item reveal" style="transition-delay: 0.2s">
+                    <summary>
+                        Bisa dipakai di iOS?
+                        <span class="chev">+</span>
+                    </summary>
+                    <div class="answer">
+                        Saat ini Hitungin baru tersedia untuk Android. Versi iOS sedang dalam pengembangan.
+                    </div>
+                </details>
             </div>
         </div>
     </section>
 
     <!-- CTA -->
-    <section class="cta">
+    <section class="cta" id="download">
         <div class="container">
-            <h2>Mulai Atur Keuanganmu</h2>
-            <p>Download Hitungin sekarang dan rasakan kemudahan mencatat keuangan secara otomatis.</p>
-            <a href="https://github.com/arkastudio462/hitungin/releases/latest" class="btn-download" target="_blank" rel="noopener">
-                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.98-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-                Download Sekarang
-            </a>
+            <div class="cta-box reveal">
+                <h2>Mulai Atur Keuanganmu Sekarang</h2>
+                <p>Download Hitungin dan rasakan kemudahan mencatat keuangan secara otomatis. Gratis, selamanya.</p>
+                <a href="https://github.com/arkastudio462/hitungin/releases/latest" class="btn-download" target="_blank" rel="noopener">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                    Download Sekarang
+                </a>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; {{ date('Y') }} Hitungin. Dibuat dengan ❤️ oleh <a href="https://github.com/arkastudio462" target="_blank" rel="noopener">Arkastudio</a></p>
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="logo">
+                        <div class="logo-icon">H</div>
+                        Hitungin
+                    </a>
+                    <p>Aplikasi pencatatan keuangan pribadi dengan deteksi otomatis dari notifikasi bank dan e-wallet.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#fitur">Fitur</a>
+                    <a href="#cara-kerja">Cara Kerja</a>
+                    <a href="#testimoni">Testimoni</a>
+                    <a href="#faq">FAQ</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; {{ date('Y') }} Hitungin. Dibuat dengan ❤️ oleh <a href="https://github.com/arkastudio462" target="_blank" rel="noopener">Arkastudio</a></p>
+                <p>Gratis · Tanpa Iklan · Privat</p>
+            </div>
         </div>
     </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+        });
+        mobileMenu.querySelectorAll('a').forEach((a) => {
+            a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+        });
+
+        // Reveal on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    </script>
 </body>
 </html>

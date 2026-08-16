@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AppVersionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CategoryController;
@@ -47,6 +48,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'markRead']);
     Route::post('/notifications/read-all', [NotificationController::class, 'markAllRead']);
+
+    Route::get('/app/version', [AppVersionController::class, 'check']);
 
     Route::get('/notification-forwards', [NotificationForwardController::class, 'index']);
     Route::get('/notification-forwards/pending-count', [NotificationForwardController::class, 'pendingCount']);

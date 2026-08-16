@@ -5,7 +5,11 @@ on:
     branches: [ main ]
     paths:
       - 'android-companion/**'
+      - '.github/workflows/build-android.yml'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -46,3 +50,33 @@ jobs:
         with:
           name: keuangan-companion-release
           path: android-companion/app/build/outputs/apk/release/app-release-unsigned.apk
+
+      - name: Read version
+        id: version
+        run: |
+          VERSION=$(grep 'versionName' android-companion/app/build.gradle.kts | sed -n 's/.*versionName = "\([^"]*\)".*/\1/p' | head -1)
+          if [ -z "$VERSION" ]; then
+            VERSION="1.0.0"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: Hitungin v${{ steps.version.outputs.version }}
+          body: |
+            Rilis resmi aplikasi Hitungin Companion.
+
+            **Yang baru di versi ini:**
+            - Deteksi otomatis notifikasi bank & e-wallet
+            - Parsing transaksi dengan AI
+            - Sinkronisasi transaksi ke web app
+
+            **Download:**
+            - APK Debug (untuk testing): `keuangan-companion-debug`
+            - APK Release: `keuangan-companion-release`
+          files: |
+            android-companion/app/build/outputs/apk/debug/app-debug.apk
+          draft: false
+          prerelease: false

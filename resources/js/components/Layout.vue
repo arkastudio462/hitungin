@@ -3,6 +3,8 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useThemeStore } from '@/stores/theme';
+import { useNotificationStore } from '@/stores/notifications';
+import api from '@/composables/useApi';
 import NotificationDropdown from '@/components/NotificationDropdown.vue';
 import ReceiptScanner from '@/components/ReceiptScanner.vue';
 import {
@@ -29,6 +31,7 @@ const route = useRoute();
 const router = useRouter();
 const auth = useAuthStore();
 const theme = useThemeStore();
+const notificationStore = useNotificationStore();
 
 const showProfileMenu = ref(false);
 const profileMenuRef = ref(null);
@@ -59,6 +62,7 @@ const moreMenuItems = [
 
 onMounted(() => {
     document.addEventListener('click', handleClickOutside);
+    checkAppVersion();
 });
 
 onBeforeUnmount(() => {
@@ -94,6 +98,21 @@ function goTo(path) {
 
 function onScanSaved() {
     showScanner.value = false;
+}
+
+const APP_VERSION_KEY = 'hitungin_app_version';
+
+async function checkAppVersion() {
+    try {
+        const storedVersion = localStorage.getItem(APP_VERSION_KEY) || '0.0.0';
+        const res = await api.get('/app/version', { params: { current_version: storedVersion } });
+        if (res.data.update_available) {
+            notificationStore.fetchAll();
+        }
+        localStorage.setItem(APP_VERSION_KEY, res.data.latest_version);
+    } catch {
+        // silently ignore version check failures
+    }
 }
 </script>
 
