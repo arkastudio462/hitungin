@@ -1,0 +1,3 @@
+-dontwarn javax.annotation.**
+-keep class com.siojol.companion.model.** { *; }
+-keep class com.siojol.companion.api.** { *; }

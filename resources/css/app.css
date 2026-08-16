@@ -1,0 +1,78 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-primary: #2563eb;
+    --color-primary-dark: #1d4ed8;
+    --color-success: #16a34a;
+    --color-danger: #dc2626;
+    --color-warning: #f59e0b;
+    --color-surface: #f8fafc;
+    --color-card: #ffffff;
+    --color-muted: #64748b;
+    --color-border: #e2e8f0;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    @apply bg-surface text-gray-900 antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+.dark body,
+.dark {
+    @apply bg-gray-900 text-gray-100;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+/* Input focus ring */
+input:focus,
+select:focus,
+textarea:focus {
+    @apply outline-none ring-2 ring-primary/20;
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+    @apply bg-gray-800 border-gray-700 text-gray-100;
+}
+
+/* Animation keyframes */
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-slide-up {
+    animation: slide-up 0.3s ease-out both;
+}
+
+.animate-fade-in {
+    animation: fade-in 0.2s ease-out both;
+}
