@@ -104,7 +104,7 @@ function onScanSaved() {
             <div class="mx-auto flex h-14 max-w-lg items-center justify-between px-4">
                 <div class="flex items-center gap-2">
                     <Wallet class="size-6 text-primary" />
-                    <span class="text-lg font-extrabold text-gray-900 dark:text-white">Keuangan</span>
+                    <span class="text-lg font-extrabold text-gray-900 dark:text-white">Hitungin</span>
                 </div>
                 <div class="flex items-center gap-1">
                     <!-- Theme Toggle -->

@@ -67,7 +67,7 @@ fun LoginScreen(prefs: UserPrefs) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Keuangan",
+            text = "Hitungin",
             fontSize = 28.sp,
             fontWeight = FontWeight.ExtraBold,
             color = MaterialTheme.colorScheme.primary
@@ -191,7 +191,7 @@ fun HomeScreen(prefs: UserPrefs) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Keuangan",
+            text = "Hitungin",
             fontSize = 28.sp,
             fontWeight = FontWeight.ExtraBold,
             color = MaterialTheme.colorScheme.primary

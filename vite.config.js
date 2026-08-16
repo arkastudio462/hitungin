@@ -24,8 +24,8 @@ export default defineConfig({
             registerType: 'autoUpdate',
             includeAssets: ['favicon.ico', 'icons/*.svg'],
             manifest: {
-                name: 'Keuangan - Aplikasi Keuangan',
-                short_name: 'Keuangan',
+                name: 'Hitungin',
+                short_name: 'Hitungin',
                 description: 'Aplikasi pencatatan keuangan pribadi',
                 theme_color: '#2563eb',
                 background_color: '#ffffff',
