@@ -31,7 +31,7 @@ object ApiClient {
                 .build()
 
             retrofit = Retrofit.Builder()
-                .baseUrl "${prefs.baseUrl}/")
+                .baseUrl("${prefs.baseUrl}/")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
