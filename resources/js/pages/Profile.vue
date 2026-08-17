@@ -3,13 +3,10 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import api from '@/composables/useApi';
-import { User, Mail, Lock, Eye, EyeOff, Loader2, ArrowLeft, Smartphone, BellRing } from '@lucide/vue';
+import { User, Mail, Lock, Eye, EyeOff, Loader2, ArrowLeft, Smartphone } from '@lucide/vue';
 
 const router = useRouter();
 const auth = useAuthStore();
-
-const isAndroidApp = typeof window !== 'undefined' && typeof window.AndroidBridge !== 'undefined';
-const listenerEnabled = ref(false);
 
 const form = ref({
     name: '',
@@ -25,7 +22,7 @@ const toggling = ref(false);
 const showPassword = ref(false);
 const showConfirmation = ref(false);
 const successMessage = ref('');
-const autoDetectEnabled = ref(true);
+const autoDetectEnabled = ref(false);
 
 onMounted(async () => {
     loading.value = true;
@@ -33,10 +30,7 @@ onMounted(async () => {
         await auth.fetchUser();
         form.value.name = auth.user?.name || '';
         form.value.email = auth.user?.email || '';
-        autoDetectEnabled.value = auth.user?.auto_detect_enabled ?? true;
-        if (isAndroidApp) {
-            listenerEnabled.value = window.AndroidBridge.isNotificationListenerEnabled() === true;
-        }
+        autoDetectEnabled.value = auth.user?.auto_detect_enabled ?? false;
     } finally {
         loading.value = false;
     }
@@ -93,17 +87,6 @@ async function toggleAutoDetect() {
     }
 }
 
-function openNotificationSettings() {
-    if (isAndroidApp) {
-        window.AndroidBridge.openNotificationSettings();
-    }
-}
-
-async function refreshListenerStatus() {
-    if (isAndroidApp) {
-        listenerEnabled.value = window.AndroidBridge.isNotificationListenerEnabled() === true;
-    }
-}
 </script>
 
 <template>
@@ -136,37 +119,6 @@ async function refreshListenerStatus() {
             <p v-if="successMessage" class="rounded-xl bg-green-50 px-4 py-2.5 text-xs font-medium text-green-600 dark:bg-green-900/20 dark:text-green-400">
                 {{ successMessage }}
             </p>
-
-            <!-- Notification Access (Android app only) -->
-            <div v-if="isAndroidApp" class="rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-800">
-                <div class="flex items-start gap-3">
-                    <div class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                        <BellRing class="size-5" />
-                    </div>
-                    <div class="flex-1">
-                        <p class="text-sm font-semibold text-gray-900 dark:text-white">Akses Notifikasi</p>
-                        <p class="mt-0.5 text-xs leading-relaxed text-gray-500 dark:text-gray-400">
-                            {{ listenerEnabled ? 'Akses notifikasi sudah aktif. Transaksi akan tercatat otomatis.' : 'Aktifkan akses notifikasi di pengaturan Android agar Hitungin bisa membaca notifikasi bank/e-wallet.' }}
-                        </p>
-                    </div>
-                    <button
-                        v-if="!listenerEnabled"
-                        type="button"
-                        @click="openNotificationSettings"
-                        class="shrink-0 rounded-xl bg-primary px-4 py-2 text-xs font-bold text-white shadow-md transition-all active:scale-[0.98]"
-                    >
-                        Aktifkan
-                    </button>
-                    <button
-                        v-else
-                        type="button"
-                        @click="refreshListenerStatus"
-                        class="shrink-0 rounded-xl bg-green-100 px-3 py-2 text-xs font-bold text-green-600 transition-all active:scale-[0.98] dark:bg-green-900/30 dark:text-green-400"
-                    >
-                        Aktif
-                    </button>
-                </div>
-            </div>
 
             <!-- Auto Detect Setting -->
             <div class="flex items-center justify-between gap-3 rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-800">

@@ -119,7 +119,7 @@ async function checkAppVersion() {
     <div class="min-h-screen overflow-x-hidden bg-surface pb-24 dark:bg-gray-900 transition-colors duration-300">
         <!-- Header -->
         <header class="sticky top-0 z-40 border-b border-border bg-white/85 backdrop-blur-sm dark:bg-gray-900/85 dark:border-gray-800">
-            <div class="mx-auto flex h-14 max-w-lg items-center justify-between px-4">
+            <div class="mx-auto flex h-14 max-w-lg items-center justify-between px-4 pt-[env(safe-area-inset-top)]">
                 <div class="flex items-center gap-2">
                     <div class="flex size-7 items-center justify-center rounded-lg bg-primary text-sm font-extrabold text-white">H</div>
                     <span class="text-lg font-extrabold text-gray-900 dark:text-white">Hitungin</span>
@@ -191,7 +191,7 @@ async function checkAppVersion() {
         </main>
 
         <!-- Bottom Tab Bar -->
-        <nav class="fixed inset-x-0 bottom-0 z-50 px-4 pb-4">
+        <nav class="fixed inset-x-0 bottom-0 z-50 px-4 pb-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
             <div class="mx-auto flex max-w-lg items-center justify-around rounded-2xl border border-border bg-white p-2 shadow-lg dark:bg-gray-800 dark:border-gray-700">
                 <!-- Beranda -->
                 <RouterLink

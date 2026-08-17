@@ -3,6 +3,12 @@ import { useAuthStore } from '@/stores/auth';
 
 const routes = [
     {
+        path: '/welcome',
+        name: 'welcome',
+        component: () => import('@/pages/Welcome.vue'),
+        meta: { guest: true },
+    },
+    {
         path: '/login',
         name: 'login',
         component: () => import('@/pages/Login.vue'),
@@ -81,14 +87,21 @@ const router = createRouter({
 router.beforeEach(async (to) => {
     const auth = useAuthStore();
 
+    if (to.name === 'welcome') {
+        if (auth.isAuthenticated) {
+            return { name: 'dashboard' };
+        }
+        return;
+    }
+
     if (to.meta.auth) {
         if (!auth.isAuthenticated) {
-            return { name: 'login' };
+            return localStorage.getItem('hitungin_welcomed') ? { name: 'login' } : { name: 'welcome' };
         }
         if (!auth.user) {
             await auth.fetchUser();
             if (!auth.user) {
-                return { name: 'login' };
+                return localStorage.getItem('hitungin_welcomed') ? { name: 'login' } : { name: 'welcome' };
             }
         }
     }
