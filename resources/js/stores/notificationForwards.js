@@ -1,10 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { useApi } from '../composables/useApi'
+import api from '@/composables/useApi'
 
 export const useNotificationForwardsStore = defineStore('notificationForwards', () => {
-  const api = useApi()
-
   const forwards = ref([])
   const pagination = ref(null)
   const loading = ref(false)
