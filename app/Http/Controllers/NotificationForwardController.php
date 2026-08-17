@@ -80,7 +80,7 @@ class NotificationForwardController extends Controller
 
     public function confirm(Request $request, NotificationForward $forward)
     {
-        if ($forward->user_id !== $request->user()->id) {
+        if ((int) $forward->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 
@@ -137,7 +137,7 @@ class NotificationForwardController extends Controller
 
     public function ignore(Request $request, NotificationForward $forward)
     {
-        if ($forward->user_id !== $request->user()->id) {
+        if ((int) $forward->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 

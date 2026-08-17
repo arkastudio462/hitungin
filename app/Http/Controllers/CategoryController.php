@@ -34,7 +34,7 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        if ($category->user_id !== $request->user()->id) {
+        if ((int) $category->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 
@@ -52,7 +52,7 @@ class CategoryController extends Controller
 
     public function destroy(Request $request, Category $category)
     {
-        if ($category->user_id !== $request->user()->id) {
+        if ((int) $category->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 

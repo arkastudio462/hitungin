@@ -37,7 +37,7 @@ class AccountController extends Controller
 
     public function update(Request $request, Account $account)
     {
-        if ($account->user_id !== $request->user()->id) {
+        if ((int) $account->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 
@@ -57,7 +57,7 @@ class AccountController extends Controller
 
     public function destroy(Request $request, Account $account)
     {
-        if ($account->user_id !== $request->user()->id) {
+        if ((int) $account->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 

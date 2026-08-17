@@ -48,7 +48,7 @@ function skip() {
 </script>
 
 <template>
-    <div class="flex min-h-screen flex-col bg-white dark:bg-gray-900">
+    <div class="flex min-h-screen flex-col overflow-y-auto bg-white dark:bg-gray-900">
         <!-- Skip -->
         <div class="flex justify-end px-5 pt-4">
             <button
@@ -61,7 +61,7 @@ function skip() {
         </div>
 
         <!-- Slides -->
-        <div class="flex flex-1 flex-col items-center justify-center px-6">
+        <div class="m-auto flex w-full flex-col items-center px-6 py-10">
             <Transition name="fade" mode="out-in">
                 <div :key="currentSlide" class="flex flex-col items-center text-center">
                     <!-- Icon -->
@@ -96,7 +96,7 @@ function skip() {
         </div>
 
         <!-- Bottom Button -->
-        <div class="px-6 pb-8 pt-4">
+        <div class="shrink-0 px-6 pb-8 pt-4">
             <button
                 @click="next"
                 class="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600 py-4 text-sm font-bold text-white shadow-lg shadow-blue-500/25 transition-all duration-200 hover:from-blue-600 hover:to-blue-700 active:scale-[0.98]"

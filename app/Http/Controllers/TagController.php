@@ -31,7 +31,7 @@ class TagController extends Controller
 
     public function update(Request $request, Tag $tag)
     {
-        if ($tag->user_id !== $request->user()->id) {
+        if ((int) $tag->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 
@@ -47,7 +47,7 @@ class TagController extends Controller
 
     public function destroy(Request $request, Tag $tag)
     {
-        if ($tag->user_id !== $request->user()->id) {
+        if ((int) $tag->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 

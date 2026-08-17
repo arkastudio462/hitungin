@@ -118,7 +118,11 @@ async function handleDelete(id) {
 }
 
 async function toggleActive(r) {
-    await store.update(r.id, { is_active: !r.is_active });
+    try {
+        await store.update(r.id, { is_active: !r.is_active });
+    } catch (e) {
+        formError.value = e.response?.data?.message || 'Gagal mengubah status.';
+    }
 }
 </script>
 
@@ -140,6 +144,11 @@ async function toggleActive(r) {
         <div v-if="store.loading" class="flex items-center justify-center py-12">
             <div class="size-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
         </div>
+
+        <!-- Error -->
+        <p v-if="formError && !showForm" class="rounded-xl bg-red-50 px-4 py-2.5 text-xs font-medium text-red-600 dark:bg-red-900/20 dark:text-red-400">
+            {{ formError }}
+        </p>
 
         <!-- Empty -->
         <div v-else-if="!store.recurring.length" class="rounded-2xl bg-white p-8 text-center shadow-sm dark:bg-gray-800">
@@ -193,20 +202,20 @@ async function toggleActive(r) {
                 <div class="mt-3 flex justify-end gap-2">
                     <button
                         @click="toggleActive(r)"
-                        class="rounded-full px-3 py-1 text-[10px] font-bold active:scale-95"
+                        class="rounded-full px-3.5 py-1.5 text-xs font-bold transition-all active:scale-95"
                         :class="r.is_active ? 'text-warning bg-warning/10' : 'text-success bg-success/10'"
                     >
                         {{ r.is_active ? 'Nonaktifkan' : 'Aktifkan' }}
                     </button>
                     <button
                         @click="openEdit(r)"
-                        class="rounded-full px-3 py-1 text-[10px] font-bold text-primary bg-primary/10 active:scale-95"
+                        class="rounded-full px-3.5 py-1.5 text-xs font-bold text-primary bg-primary/10 transition-all active:scale-95"
                     >
                         Edit
                     </button>
                     <button
                         @click="handleDelete(r.id)"
-                        class="rounded-full px-3 py-1 text-[10px] font-bold text-danger bg-danger/10 active:scale-95"
+                        class="rounded-full px-3.5 py-1.5 text-xs font-bold text-danger bg-danger/10 transition-all active:scale-95"
                     >
                         Hapus
                     </button>

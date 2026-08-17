@@ -52,7 +52,7 @@ class RecurringTransactionController extends Controller
 
     public function update(Request $request, RecurringTransaction $recurring)
     {
-        if ($recurring->user_id !== $request->user()->id) {
+        if ((int) $recurring->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 
@@ -86,7 +86,7 @@ class RecurringTransactionController extends Controller
 
     public function destroy(Request $request, RecurringTransaction $recurring)
     {
-        if ($recurring->user_id !== $request->user()->id) {
+        if ((int) $recurring->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 

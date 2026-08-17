@@ -76,7 +76,7 @@ class TransactionController extends Controller
 
     public function update(Request $request, Transaction $transaction)
     {
-        if ($transaction->user_id !== $request->user()->id) {
+        if ((int) $transaction->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 
@@ -119,7 +119,7 @@ class TransactionController extends Controller
 
     public function destroy(Request $request, Transaction $transaction)
     {
-        if ($transaction->user_id !== $request->user()->id) {
+        if ((int) $transaction->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 

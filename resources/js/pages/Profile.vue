@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import api from '@/composables/useApi';
@@ -73,9 +73,20 @@ async function handleSubmit() {
     }
 }
 
+const isCompanionApp = typeof window.AndroidBridge !== 'undefined';
+
 async function toggleAutoDetect() {
-    toggling.value = true;
     const newValue = !autoDetectEnabled.value;
+
+    if (newValue && isCompanionApp) {
+        const granted = window.AndroidBridge.isNotificationListenerEnabled();
+        if (!granted) {
+            window.AndroidBridge.openNotificationSettings();
+            return;
+        }
+    }
+
+    toggling.value = true;
     try {
         const res = await api.put('/user', { auto_detect_enabled: newValue });
         auth.user = res.data;
@@ -86,6 +97,22 @@ async function toggleAutoDetect() {
         toggling.value = false;
     }
 }
+
+function onVisibilityChange() {
+    if (document.visibilityState !== 'visible' || !isCompanionApp) return;
+    const granted = window.AndroidBridge.isNotificationListenerEnabled();
+    if (granted && !autoDetectEnabled.value) {
+        toggleAutoDetect();
+    }
+}
+
+onMounted(() => {
+    document.addEventListener('visibilitychange', onVisibilityChange);
+});
+
+onUnmounted(() => {
+    document.removeEventListener('visibilitychange', onVisibilityChange);
+});
 
 </script>
 

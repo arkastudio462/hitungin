@@ -40,7 +40,7 @@ class SavingsGoalController extends Controller
 
     public function update(Request $request, SavingsGoal $savingsGoal)
     {
-        if ($savingsGoal->user_id !== $request->user()->id) {
+        if ((int) $savingsGoal->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 
@@ -62,7 +62,7 @@ class SavingsGoalController extends Controller
 
     public function destroy(Request $request, SavingsGoal $savingsGoal)
     {
-        if ($savingsGoal->user_id !== $request->user()->id) {
+        if ((int) $savingsGoal->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 
@@ -73,7 +73,7 @@ class SavingsGoalController extends Controller
 
     public function deposit(Request $request, SavingsGoal $savingsGoal)
     {
-        if ($savingsGoal->user_id !== $request->user()->id) {
+        if ((int) $savingsGoal->user_id !== (int) $request->user()->id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 
