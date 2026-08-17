@@ -21,9 +21,8 @@ class UserPrefs(context: Context) {
         get() = prefs.getString("token", null)
         set(value) = prefs.edit().putString("token", value).apply()
 
-    var baseUrl: String
-        get() = prefs.getString("base_url", "https://hitungin.arkastudio.my.id") ?: "https://hitungin.arkastudio.my.id"
-        set(value) = prefs.edit().putString("base_url", value).apply()
+    val baseUrl: String
+        get() = "https://hitungin.arkastudio.my.id"
 
     var apiKey: String
         get() = prefs.getString("api_key", "siojol_android_key_2026") ?: "siojol_android_key_2026"
