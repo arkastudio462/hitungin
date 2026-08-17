@@ -22,7 +22,7 @@ class UserPrefs(context: Context) {
         set(value) = prefs.edit().putString("token", value).apply()
 
     var baseUrl: String
-        get() = prefs.getString("base_url", "https://hitungin.com") ?: "https://hitungin.com"
+        get() = prefs.getString("base_url", "https://hitungin.arkastudio.my.id") ?: "https://hitungin.arkastudio.my.id"
         set(value) = prefs.edit().putString("base_url", value).apply()
 
     var apiKey: String
