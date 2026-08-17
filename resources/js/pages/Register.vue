@@ -59,9 +59,7 @@ async function handleSubmit() {
         <div class="flex flex-1 flex-col items-center justify-center">
             <!-- Logo Circle -->
             <div class="mb-6 flex size-20 items-center justify-center rounded-3xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg shadow-blue-500/25">
-                <svg class="size-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                </svg>
+                <span class="text-4xl font-extrabold text-white">H</span>
             </div>
 
             <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white">Buat Akun</h1>

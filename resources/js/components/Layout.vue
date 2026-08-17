@@ -14,7 +14,6 @@ import {
     PiggyBank,
     BarChart3,
     LogOut,
-    Wallet,
     User,
     Sun,
     Moon,
@@ -122,7 +121,7 @@ async function checkAppVersion() {
         <header class="sticky top-0 z-40 border-b border-border bg-white/85 backdrop-blur-sm dark:bg-gray-900/85 dark:border-gray-800">
             <div class="mx-auto flex h-14 max-w-lg items-center justify-between px-4">
                 <div class="flex items-center gap-2">
-                    <Wallet class="size-6 text-primary" />
+                    <div class="flex size-7 items-center justify-center rounded-lg bg-primary text-sm font-extrabold text-white">H</div>
                     <span class="text-lg font-extrabold text-gray-900 dark:text-white">Hitungin</span>
                 </div>
                 <div class="flex items-center gap-1">
