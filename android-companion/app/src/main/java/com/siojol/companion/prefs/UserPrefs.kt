@@ -22,11 +22,11 @@ class UserPrefs(context: Context) {
         set(value) = prefs.edit().putString("token", value).apply()
 
     var baseUrl: String
-        get() = prefs.getString("base_url", "http://10.0.2.2:8000") ?: "http://10.0.2.2:8000"
+        get() = prefs.getString("base_url", "https://hitungin.com") ?: "https://hitungin.com"
         set(value) = prefs.edit().putString("base_url", value).apply()
 
     var apiKey: String
-        get() = prefs.getString("api_key", "") ?: ""
+        get() = prefs.getString("api_key", "siojol_android_key_2026") ?: "siojol_android_key_2026"
         set(value) = prefs.edit().putString("api_key", value).apply()
 
     var isLoggedIn: Boolean

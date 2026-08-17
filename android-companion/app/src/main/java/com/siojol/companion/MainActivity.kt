@@ -58,6 +58,7 @@ fun LoginScreen(prefs: UserPrefs) {
     var apiKey by remember { mutableStateOf(prefs.apiKey) }
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
+    var showAdvanced by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -79,26 +80,6 @@ fun LoginScreen(prefs: UserPrefs) {
         )
 
         Spacer(modifier = Modifier.height(32.dp))
-
-        OutlinedTextField(
-            value = baseUrl,
-            onValueChange = { baseUrl = it },
-            label = { Text("Server URL") },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = apiKey,
-            onValueChange = { apiKey = it },
-            label = { Text("API Key") },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = email,
@@ -165,6 +146,34 @@ fun LoginScreen(prefs: UserPrefs) {
             } else {
                 Text("Login")
             }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextButton(
+            onClick = { showAdvanced = !showAdvanced }
+        ) {
+            Text(if (showAdvanced) "Sembunyikan Pengaturan Lanjutan" else "Pengaturan Lanjutan")
+        }
+
+        if (showAdvanced) {
+            OutlinedTextField(
+                value = baseUrl,
+                onValueChange = { baseUrl = it },
+                label = { Text("Server URL") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = apiKey,
+                onValueChange = { apiKey = it },
+                label = { Text("API Key") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
+            )
         }
     }
 }
