@@ -13,12 +13,11 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.siojol.companion.prefs.UserPrefs
 
@@ -76,8 +75,6 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         )
-
-                        NotificationStatusBar(prefs)
                     }
                 }
             }
@@ -113,45 +110,25 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
 
-@Composable
-fun NotificationStatusBar(prefs: UserPrefs) {
-    val context = androidx.compose.ui.platform.LocalContext.current
-
-    val listenerEnabled = remember {
-        try {
-            val cn = android.content.ComponentName(context, NotificationListener::class.java)
-            val flat = Settings.Secure.getString(context.contentResolver, "enabled_notification_listeners")
-            flat?.contains(cn.flattenToString()) == true
-        } catch (e: Exception) {
-            false
-        }
-    }
-
-    if (!listenerEnabled) {
-        Surface(
-            color = MaterialTheme.colorScheme.errorContainer,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Row(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Aktifkan akses notifikasi agar transaksi tercatat otomatis.",
-                    modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.bodySmall
+        @JavascriptInterface
+        fun isNotificationListenerEnabled(): Boolean {
+            return try {
+                val cn = android.content.ComponentName(this@MainActivity, NotificationListener::class.java)
+                val flat = Settings.Secure.getString(
+                    this@MainActivity.contentResolver,
+                    "enabled_notification_listeners"
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                TextButton(
-                    onClick = {
-                        context.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
-                    }
-                ) {
-                    Text("Aktifkan")
-                }
+                flat?.contains(cn.flattenToString()) == true
+            } catch (e: Exception) {
+                false
+            }
+        }
+
+        @JavascriptInterface
+        fun openNotificationSettings() {
+            runOnUiThread {
+                startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
             }
         }
     }
