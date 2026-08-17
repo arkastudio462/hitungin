@@ -3,9 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
+    private function monthExpr(string $column): string
+    {
+        return DB::getDriverName() === 'sqlite'
+            ? "strftime('%m', {$column})"
+            : "DATE_FORMAT({$column}, '%m')";
+    }
+
+    private function yearMonthExpr(string $column): string
+    {
+        return DB::getDriverName() === 'sqlite'
+            ? "strftime('%Y-%m', {$column})"
+            : "DATE_FORMAT({$column}, '%Y-%m')";
+    }
+
     public function summary(Request $request)
     {
         $user = $request->user();
@@ -13,7 +28,7 @@ class ReportController extends Controller
 
         $monthly = $user->transactions()
             ->whereYear('date', $year)
-            ->selectRaw("strftime('%m', date) as month")
+            ->selectRaw($this->monthExpr('date').' as month')
             ->selectRaw("SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END) as income")
             ->selectRaw("SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END) as expense")
             ->groupBy('month')
@@ -61,7 +76,7 @@ class ReportController extends Controller
 
         $trend = $user->transactions()
             ->where('date', '>=', $startDate)
-            ->selectRaw("strftime('%Y-%m', date) as month")
+            ->selectRaw($this->yearMonthExpr('date').' as month')
             ->selectRaw("SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END) as income")
             ->selectRaw("SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END) as expense")
             ->groupBy('month')
