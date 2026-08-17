@@ -48,7 +48,7 @@ function skip() {
 </script>
 
 <template>
-    <div class="flex min-h-dvh flex-col bg-white pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] dark:bg-gray-900">
+    <div class="flex min-h-screen flex-col bg-white dark:bg-gray-900">
         <!-- Skip -->
         <div class="flex justify-end px-5 pt-4">
             <button

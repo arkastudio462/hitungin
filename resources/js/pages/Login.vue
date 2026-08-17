@@ -40,9 +40,9 @@ async function handleSubmit() {
 </script>
 
 <template>
-    <div class="flex min-h-dvh flex-col overflow-y-auto bg-gradient-to-b from-blue-50 to-white px-5 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] dark:from-gray-900 dark:to-gray-800">
+    <div class="flex min-h-screen flex-col overflow-y-auto bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
         <!-- Top: Logo & Heading -->
-        <div class="flex min-h-dvh flex-col items-center justify-center py-10">
+        <div class="m-auto flex w-full max-w-sm flex-col items-center px-5 py-10">
             <!-- Logo Circle -->
             <div class="mb-6 flex size-20 items-center justify-center rounded-3xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg shadow-blue-500/25">
                 <span class="text-4xl font-extrabold text-white">H</span>
@@ -118,7 +118,7 @@ async function handleSubmit() {
         </div>
 
         <!-- Bottom: Register Link -->
-        <div class="shrink-0 pb-8 pt-4 text-center">
+        <div class="shrink-0 px-5 pb-8 pt-4 text-center">
             <p class="text-sm text-gray-500 dark:text-gray-400">
                 Belum punya akun?
                 <RouterLink to="/register" class="ml-1 font-bold text-blue-600 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
