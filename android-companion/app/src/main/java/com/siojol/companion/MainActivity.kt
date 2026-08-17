@@ -63,8 +63,8 @@ class MainActivity : ComponentActivity() {
                                         settings.domStorageEnabled = true
                                         settings.databaseEnabled = true
                                         settings.cacheMode = WebSettings.LOAD_DEFAULT
-                                        settings.userAgentString = settings.userAgentString + " HitunginAndroid"
                                         settings.setSupportMultipleWindows(false)
+                                        settings.userAgentString = "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36"
                                         WebView.setWebContentsDebuggingEnabled(true)
 
                                         webChromeClient = WebChromeClient()
