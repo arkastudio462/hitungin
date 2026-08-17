@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import api from '@/composables/useApi';
-import { User, Mail, Lock, Eye, EyeOff, Loader2, ArrowLeft } from '@lucide/vue';
+import { User, Mail, Lock, Eye, EyeOff, Loader2, ArrowLeft, Smartphone } from '@lucide/vue';
 
 const router = useRouter();
 const auth = useAuthStore();
@@ -18,9 +18,11 @@ const form = ref({
 const errors = ref({});
 const loading = ref(false);
 const saving = ref(false);
+const toggling = ref(false);
 const showPassword = ref(false);
 const showConfirmation = ref(false);
 const successMessage = ref('');
+const autoDetectEnabled = ref(true);
 
 onMounted(async () => {
     loading.value = true;
@@ -28,6 +30,7 @@ onMounted(async () => {
         await auth.fetchUser();
         form.value.name = auth.user?.name || '';
         form.value.email = auth.user?.email || '';
+        autoDetectEnabled.value = auth.user?.auto_detect_enabled ?? true;
     } finally {
         loading.value = false;
     }
@@ -69,6 +72,20 @@ async function handleSubmit() {
         saving.value = false;
     }
 }
+
+async function toggleAutoDetect() {
+    toggling.value = true;
+    const newValue = !autoDetectEnabled.value;
+    try {
+        const res = await api.put('/user', { auto_detect_enabled: newValue });
+        auth.user = res.data;
+        autoDetectEnabled.value = res.data.auto_detect_enabled ?? newValue;
+    } catch (e) {
+        errors.value = { name: ['Gagal mengubah pengaturan. Coba lagi.'] };
+    } finally {
+        toggling.value = false;
+    }
+}
 </script>
 
 <template>
@@ -101,6 +118,35 @@ async function handleSubmit() {
             <p v-if="successMessage" class="rounded-xl bg-green-50 px-4 py-2.5 text-xs font-medium text-green-600 dark:bg-green-900/20 dark:text-green-400">
                 {{ successMessage }}
             </p>
+
+            <!-- Auto Detect Setting -->
+            <div class="flex items-center justify-between gap-3 rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-800">
+                <div class="flex items-start gap-3">
+                    <div class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                        <Smartphone class="size-5" />
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white">Notifikasi Otomatis</p>
+                        <p class="mt-0.5 text-xs leading-relaxed text-gray-500 dark:text-gray-400">
+                            Otomatis baca pemasukan & pengeluaran dari notifikasi bank/e-wallet.
+                        </p>
+                    </div>
+                </div>
+                <button
+                    type="button"
+                    :disabled="toggling"
+                    role="switch"
+                    :aria-checked="autoDetectEnabled"
+                    @click="toggleAutoDetect"
+                    class="relative h-7 w-12 shrink-0 rounded-full transition-colors disabled:opacity-50"
+                    :class="autoDetectEnabled ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'"
+                >
+                    <span
+                        class="absolute top-1 size-5 rounded-full bg-white shadow transition-all"
+                        :class="autoDetectEnabled ? 'left-6' : 'left-1'"
+                    ></span>
+                </button>
+            </div>
 
             <!-- Form -->
             <form @submit.prevent="handleSubmit" class="space-y-4 rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-800">

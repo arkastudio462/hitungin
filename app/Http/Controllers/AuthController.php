@@ -72,6 +72,7 @@ class AuthController extends Controller
             'name' => ['sometimes', 'string', 'max:255'],
             'email' => ['sometimes', 'email', 'max:255', 'unique:users,email,'.$request->user()->id],
             'password' => ['nullable', 'string', 'confirmed', Password::min(8)],
+            'auto_detect_enabled' => ['sometimes', 'boolean'],
         ]);
 
         $user = $request->user();

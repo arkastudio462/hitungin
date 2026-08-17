@@ -20,6 +20,10 @@ class NotificationForwardController extends Controller
 
         $user = $request->user();
 
+        if (! $user->auto_detect_enabled) {
+            return response()->json(['message' => 'Auto detection disabled.'], 403);
+        }
+
         $hash = Str::hash($validated['package_name'].$validated['message']);
 
         $exists = $user->notificationForwards()
