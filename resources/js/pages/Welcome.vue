@@ -48,7 +48,7 @@ function skip() {
 </script>
 
 <template>
-    <div class="flex min-h-screen flex-col overflow-y-auto bg-white dark:bg-gray-900">
+    <div class="flex min-h-dvh flex-col bg-white dark:bg-gray-900">
         <!-- Skip -->
         <div class="flex justify-end px-5 pt-4">
             <button
@@ -61,7 +61,7 @@ function skip() {
         </div>
 
         <!-- Slides -->
-        <div class="m-auto flex w-full flex-col items-center px-6 py-10">
+        <div class="flex flex-1 flex-col items-center justify-center px-6 py-10">
             <Transition name="fade" mode="out-in">
                 <div :key="currentSlide" class="flex flex-col items-center text-center">
                     <!-- Icon -->

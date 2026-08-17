@@ -54,9 +54,9 @@ async function handleSubmit() {
 </script>
 
 <template>
-    <div class="flex min-h-screen flex-col overflow-y-auto bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div class="flex min-h-dvh flex-col bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
         <!-- Top: Logo & Heading -->
-        <div class="m-auto flex w-full max-w-sm flex-col items-center px-5 py-10">
+        <div class="flex flex-1 flex-col items-center justify-center px-5 py-10">
             <!-- Logo Circle -->
             <div class="mb-6 flex size-20 items-center justify-center rounded-3xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg shadow-blue-500/25">
                 <span class="text-4xl font-extrabold text-white">H</span>
