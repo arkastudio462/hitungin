@@ -27,29 +27,25 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android-companion/hitungin-release.keystore
+
       - name: Generate Gradle Wrapper
         run: gradle wrapper --gradle-version 8.11.1
-        working-directory: android-companion
-
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
         working-directory: android-companion
 
       - name: Build Release APK
         run: ./gradlew assembleRelease
         working-directory: android-companion
+        env:
+          ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/android-companion/hitungin-release.keystore
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
-      - name: Upload Debug APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: keuangan-companion-debug
-          path: android-companion/app/build/outputs/apk/debug/app-debug.apk
-
-      - name: Upload Release APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: keuangan-companion-release
-          path: android-companion/app/build/outputs/apk/release/app-release-unsigned.apk
+      - name: Copy APK with app name
+        run: cp android-companion/app/build/outputs/apk/release/app-release.apk android-companion/app/build/outputs/apk/release/hitungin.apk
 
       - name: Read version
         id: version
@@ -74,9 +70,8 @@ jobs:
             - Sinkronisasi transaksi ke web app
 
             **Download:**
-            - APK Debug (untuk testing): `keuangan-companion-debug`
-            - APK Release: `keuangan-companion-release`
+            - `hitungin.apk` — rilis resmi, siap install
           files: |
-            android-companion/app/build/outputs/apk/debug/app-debug.apk
+            android-companion/app/build/outputs/apk/release/hitungin.apk
           draft: false
           prerelease: false
