@@ -48,7 +48,7 @@ function skip() {
 </script>
 
 <template>
-    <div class="flex min-h-dvh flex-col bg-white dark:bg-gray-900">
+    <div class="flex full-height flex-col bg-white dark:bg-gray-900">
         <!-- Skip -->
         <div class="flex justify-end px-5 pt-4">
             <button

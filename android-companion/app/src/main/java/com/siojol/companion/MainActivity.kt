@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -53,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Column(modifier = Modifier.fillMaxSize().safeDrawingPadding()) {
+                    Column(modifier = Modifier.fillMaxSize()) {
                         Box(modifier = Modifier.weight(1f)) {
                             AndroidView(
                                 modifier = Modifier.fillMaxSize(),
@@ -65,6 +64,8 @@ class MainActivity : ComponentActivity() {
                                         settings.databaseEnabled = true
                                         settings.cacheMode = WebSettings.LOAD_DEFAULT
                                         settings.setSupportMultipleWindows(false)
+                                        settings.useWideViewPort = true
+                                        settings.loadWithOverviewMode = true
                                         settings.userAgentString = "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36"
                                         WebView.setWebContentsDebuggingEnabled(true)
 
