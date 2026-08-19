@@ -267,6 +267,26 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
         }
+        .btn-app {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            color: var(--primary);
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            border: 2px solid var(--primary);
+            transition: all 0.2s;
+        }
+        .btn-app:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
 
         /* ===== Phone mockup ===== */
         .hero-visual {
@@ -903,6 +923,10 @@
                 Hitungin membaca notifikasi bank dan e-wallet di HP kamu, lalu mencatat setiap transaksi secara otomatis. Tanpa input manual, tanpa ribet.
             </p>
             <div class="hero-buttons reveal" style="transition-delay: 0.3s">
+                <a href="/app" class="btn-app">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+                    Buka Aplikasi
+                </a>
                 <a href="https://github.com/arkastudio462/hitungin/releases/latest/download/hitungin.apk" class="btn-download" download>
                     <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                     Download APK
@@ -1220,7 +1244,12 @@
             <div class="cta-box reveal">
                 <h2>Mulai Atur Keuanganmu Sekarang</h2>
                 <p>Download Hitungin dan rasakan kemudahan mencatat keuangan secara otomatis. Gratis, selamanya.</p>
-                <a href="https://github.com/arkastudio462/hitungin/releases/latest/download/hitungin.apk" class="btn-download" download>
+                <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+                    <a href="/app" class="btn-app">
+                        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+                        Buka Aplikasi
+                    </a>
+                    <a href="https://github.com/arkastudio462/hitungin/releases/latest/download/hitungin.apk" class="btn-download" download>
                     <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                     Download Sekarang
                 </a>

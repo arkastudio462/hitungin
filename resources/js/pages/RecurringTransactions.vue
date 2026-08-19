@@ -117,13 +117,6 @@ async function handleDelete(id) {
     }
 }
 
-async function toggleActive(r) {
-    try {
-        await store.update(r.id, { is_active: !r.is_active });
-    } catch (e) {
-        formError.value = e.response?.data?.message || 'Gagal mengubah status.';
-    }
-}
 </script>
 
 <template>
@@ -200,13 +193,6 @@ async function toggleActive(r) {
                     </div>
                 </div>
                 <div class="mt-3 flex justify-end gap-2">
-                    <button
-                        @click="toggleActive(r)"
-                        class="rounded-full px-3.5 py-1.5 text-xs font-bold transition-all active:scale-95"
-                        :class="r.is_active ? 'text-warning bg-warning/10' : 'text-success bg-success/10'"
-                    >
-                        {{ r.is_active ? 'Nonaktifkan' : 'Aktifkan' }}
-                    </button>
                     <button
                         @click="openEdit(r)"
                         class="rounded-full px-3.5 py-1.5 text-xs font-bold text-primary bg-primary/10 transition-all active:scale-95"
