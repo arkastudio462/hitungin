@@ -64,8 +64,6 @@ class MainActivity : ComponentActivity() {
                                         settings.databaseEnabled = true
                                         settings.cacheMode = WebSettings.LOAD_DEFAULT
                                         settings.setSupportMultipleWindows(false)
-                                        settings.useWideViewPort = true
-                                        settings.loadWithOverviewMode = true
                                         settings.userAgentString = "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36"
                                         WebView.setWebContentsDebuggingEnabled(true)
 
@@ -87,6 +85,7 @@ class MainActivity : ComponentActivity() {
                                                 super.onPageFinished(view, url)
                                                 isLoading = false
                                                 loadError = null
+                                                injectViewportHeight()
                                                 injectTokenSync()
                                             }
 
@@ -151,6 +150,24 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun injectViewportHeight() {
+        _webView?.evaluateJavascript(
+            """
+            (function() {
+                function setVh() {
+                    var vh = window.innerHeight * 0.01;
+                    document.documentElement.style.setProperty('--vh', vh + 'px');
+                }
+                setVh();
+                window.addEventListener('resize', setVh);
+                window.addEventListener('orientationchange', function() {
+                    setTimeout(setVh, 100);
+                });
+            })();
+            """.trimIndent(), null
+        )
     }
 
     private fun injectTokenSync() {

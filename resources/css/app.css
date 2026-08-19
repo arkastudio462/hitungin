@@ -28,6 +28,10 @@ body {
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
 }
 
+:root {
+    --vh: 1vh;
+}
+
 html, body {
     min-height: 100%;
     margin: 0;
@@ -35,7 +39,7 @@ html, body {
 }
 
 .full-height {
-    min-height: 100vh;
+    min-height: calc(var(--vh) * 100);
 }
 
 .dark body,
