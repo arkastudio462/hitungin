@@ -46,8 +46,7 @@ class ReceiptScanService
                 ],
             ],
             'temperature' => 0.1,
-            'max_completion_tokens' => 2048,
-            'response_format' => ['type' => 'json_object'],
+            'max_tokens' => 2048,
         ]);
 
         if ($response->failed()) {
@@ -57,7 +56,9 @@ class ReceiptScanService
 
         $content = $response->json('choices.0.message.content', '{}');
 
-        $decoded = json_decode($content, true);
+        $json = $this->extractJson($content);
+
+        $decoded = json_decode($json, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new \RuntimeException('Gagal parse response AI.');
@@ -69,35 +70,39 @@ class ReceiptScanService
     protected function getPrompt(): string
     {
         return <<<'PROMPT'
-Analisa struk belanja/bon ini dan ekstrak informasi berikut dalam format JSON.
+Kamu adalah AI yang menganalisa struk belanja/bon. Ekstrak informasi dari gambar struk ini.
 
-Return hanya JSON tanpa penjelasan tambahan.
+PENTING: Return HANYA JSON murni tanpa markdown, tanpa penjelasan, tanpa backtick.
 
-Format JSON yang diharapkan:
-{
-  "store": "nama toko/merchant",
-  "date": "YYYY-MM-DD",
-  "type": "expense",
-  "items": [
-    {
-      "name": "nama item",
-      "qty": 1,
-      "price": 0
-    }
-  ],
-  "total": 0,
-  "description": "ringkasan singkat"
-}
+Contoh format output:
+{"store":"Indomaret","date":"2026-08-19","type":"expense","items":[{"name":"Indomie Goreng","qty":2,"price":3500},{"name":"Aqua 600ml","qty":1,"price":4000}],"total":11000,"description":"Belanja di Indomaret - 3 item"}
 
 Aturan:
-- "type" selalu "expense" untuk struk belanja, "income" jika ada bukti pemasukan (misal struk transfer masuk)
-- "date" gunakan format YYYY-MM-DD. Jika tanggal tidak terlihat, gunakan hari ini
-- "price" adalah harga satuan dalam Rupiah (tanpa koma/titik)
-- "total" adalah total yang dibayarkan
-- Jika ada item diskon, masukkan sebagai item dengan harga negatif
-- Jika informasi tidak lengkap, isi dengan nilai terbaik yang bisa dideteksi
-- "description" berisi ringkasan singkat, misal "Belanja di Indomaret - 3 item"
+- "type" selalu "expense" untuk struk belanja, "income" jika ada bukti pemasukan
+- "date" format YYYY-MM-DD. Jika tanggal tidak terlihat, gunakan hari ini
+- "price" harga satuan dalam Rupiah (angka saja, tanpa koma/titik)
+- "total" total yang dibayarkan
+- "description" ringkasan singkat
 PROMPT;
+    }
+
+    protected function extractJson(string $content): string
+    {
+        $content = trim($content);
+
+        if (str_starts_with($content, '{')) {
+            return $content;
+        }
+
+        if (preg_match('/```(?:json)?\s*\n?(.*?)\n?\s*```/s', $content, $matches)) {
+            return trim($matches[1]);
+        }
+
+        if (preg_match('/\{.*\}/s', $content, $matches)) {
+            return $matches[0];
+        }
+
+        return $content;
     }
 
     protected function getBase64Image(string $path): string

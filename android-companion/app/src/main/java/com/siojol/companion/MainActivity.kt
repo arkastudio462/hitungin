@@ -1,7 +1,9 @@
 package com.siojol.companion
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -14,6 +16,7 @@ import android.webkit.WebResourceError
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -36,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.siojol.companion.prefs.UserPrefs
 import java.io.File
@@ -73,6 +77,23 @@ class MainActivity : ComponentActivity() {
                 fileChooserCallback = null
             }
 
+            val cameraPermissionLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.RequestPermission()
+            ) { granted ->
+                if (granted) {
+                    val intent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
+                    cameraImageUri?.let { uri ->
+                        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri)
+                        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                        filePickerLauncher.launch(intent)
+                    }
+                } else {
+                    fileChooserCallback?.onReceiveValue(null)
+                    fileChooserCallback = null
+                    Toast.makeText(context, "Izin kamera diperlukan", Toast.LENGTH_SHORT).show()
+                }
+            }
+
             var isLoading by remember { mutableStateOf(true) }
             var loadError by remember { mutableStateOf<String?>(null) }
 
@@ -85,8 +106,8 @@ class MainActivity : ComponentActivity() {
                         Box(modifier = Modifier.weight(1f)) {
                             AndroidView(
                                 modifier = Modifier.fillMaxSize(),
-                                factory = { context ->
-                                    WebView(context).apply {
+                                factory = { ctx ->
+                                    WebView(ctx).apply {
                                         _webView = this
                                         settings.javaScriptEnabled = true
                                         settings.domStorageEnabled = true
@@ -106,27 +127,39 @@ class MainActivity : ComponentActivity() {
                                                 fileChooserCallback?.onReceiveValue(null)
                                                 fileChooserCallback = filePathCallback
 
-                                                val cameraIntent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
                                                 val photoFile = createImageFile()
                                                 if (photoFile != null) {
                                                     cameraImageUri = FileProvider.getUriForFile(
-                                                        context,
-                                                        "${context.packageName}.fileprovider",
+                                                        ctx,
+                                                        "${ctx.packageName}.fileprovider",
                                                         photoFile
                                                     )
-                                                    cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, cameraImageUri)
                                                 }
 
-                                                val galleryIntent = Intent(Intent.ACTION_GET_CONTENT).apply {
-                                                    type = "image/*"
-                                                    addCategory(Intent.CATEGORY_OPENABLE)
-                                                    putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                                                val cameraIntent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                                                    cameraImageUri?.let { uri ->
+                                                        putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri)
+                                                        addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                                                    }
                                                 }
 
-                                                val chooserIntent = Intent.createChooser(galleryIntent, "Pilih gambar")
-                                                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(cameraIntent))
+                                                val hasCameraPermission = ContextCompat.checkSelfPermission(
+                                                    ctx, Manifest.permission.CAMERA
+                                                ) == PackageManager.PERMISSION_GRANTED
 
-                                                filePickerLauncher.launch(chooserIntent)
+                                                if (hasCameraPermission) {
+                                                    val galleryIntent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                                                        type = "image/*"
+                                                        addCategory(Intent.CATEGORY_OPENABLE)
+                                                        putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                                                    }
+                                                    val chooser = Intent.createChooser(galleryIntent, "Pilih gambar")
+                                                    chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(cameraIntent))
+                                                    filePickerLauncher.launch(chooser)
+                                                } else {
+                                                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                                                }
+
                                                 return true
                                             }
                                         }
