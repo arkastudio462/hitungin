@@ -27,6 +27,7 @@ class RecurringTransactionService
     private function createTransaction(RecurringTransaction $recurring): void
     {
         $transaction = $recurring->user->transactions()->create([
+            'recurring_transaction_id' => $recurring->id,
             'category_id' => $recurring->category_id,
             'account_id' => $recurring->account_id,
             'type' => $recurring->type,
